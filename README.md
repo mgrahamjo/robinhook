@@ -1,8 +1,10 @@
 # Robinhook
 
-Robinhook will automatically invest any available funds in your [Robinhood](robinhood.com) account based on simple configurable rules. Works great in conjunction with automatic transfers.
+Robinhook will automatically invest any available funds in your [Robinhood](https://robinhood.com) account based on simple configurable rules. Works great in conjunction with automatic transfers.
 
 ## Install
+
+Prerequisites: node and git
 
 `git clone https://github.com/mgrahamjo/robinhook`
 
@@ -32,4 +34,6 @@ In this configuration, MSFT will get 50% of available funds, while AMZN and GOOG
 
 ## Run
 
-From the `robinhook` project, run `node .`. You will be prompted for your Robinhood username and password. These credentials are not stored anywhere.
+From the `robinhook` project, run `node .`. Alternatively, execute the file `run.command`.
+
+You will be prompted for your Robinhood username and password. These credentials are not stored anywhere.
