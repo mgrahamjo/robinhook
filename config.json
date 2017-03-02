@@ -1,0 +1,15 @@
+{
+    "account": "XXXXXXXX",
+    "stocks": [
+        {
+            "symbol": "MSFT",
+            "allocation": 50
+        },
+        {
+            "symbol": "AMZN"
+        },
+        {
+            "symbol": "GOOG"
+        }
+    ]
+}
