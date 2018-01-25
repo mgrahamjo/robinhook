@@ -4,7 +4,7 @@ module.exports = data => {
 
     Object.keys(data).forEach(key => {
 
-        ret.push(`${key}=${data[key]}`);
+        ret.push(key + '=' + data[key]);
 
     });
 

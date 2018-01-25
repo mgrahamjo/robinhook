@@ -12,11 +12,11 @@ module.exports = {
 
     },
 
-    buy: opts => api.post('/orders/', Object.assign(opts, {
-        type: 'market',
-        time_in_force: 'gfd',
+    buy: (token, opts) => api.post('/orders/', Object.assign(opts, {
+        type: 'limit',
+        time_in_force: 'gtc',
         trigger: 'immediate',
         side: 'buy'
-    }))
+    }), token)
 
 };

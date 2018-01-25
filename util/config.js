@@ -1,5 +1,5 @@
 const read = require('fs').readFileSync,
-    config = JSON.parse(read('./config.json'));
+    config = JSON.parse(read('./mike-config.json'));
 
 let availableAllocation = 100;
 

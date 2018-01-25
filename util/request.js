@@ -6,7 +6,7 @@ module.exports = (options, data) => {
 
     options.Connection = 'keep-alive';
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
 
         const req = https.request(options, response => {
 
@@ -23,6 +23,13 @@ module.exports = (options, data) => {
                 resolve(JSON.parse(body));
 
             });
+
+            response.on('error', e => {
+
+                reject(e);
+
+            });
+
         });
 
         req.write(data || '');

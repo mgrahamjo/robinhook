@@ -7,26 +7,30 @@ function api(opts) {
 
     opts.headers.Accept = 'application/json';
 
-    if (opts.method === 'POST') {
-
-        opts.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-    }
-
     if (opts.token) {
 
         opts.headers.Authorization = `Token ${opts.token}`;
 
     }
 
-    console.log(`${opts.method.toLowerCase()} ${opts.url}...`);
+    if (opts.data) {
+
+        opts.data = serialize(opts.data);
+
+        opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+        opts.headers['Content-Length'] = Buffer.byteLength(opts.data);
+
+    }
+
+    console.log(`${opts.method} ${opts.url}...`);
 
     return request({
         host: 'api.robinhood.com',
-        path: opts.url,
+        path: opts.url + (opts.params ? '?' + serialize(opts.params) : ''),
         method: opts.method,
         headers: opts.headers
-    }, opts.data ? serialize(opts.data) : undefined);
+    }, opts.data);
 
 }
 

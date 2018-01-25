@@ -3,8 +3,6 @@ const robinhood = require('./util/robinhood'),
     config = require('./util/config'),
     format = price => '$' + parseFloat(price).toFixed(2);
 
-// function print(obj) { console.log(JSON.stringify(obj, null, '\t')); }
-
 prompt('username: ').then(username => 
 
     prompt('password: ').then(password => 
@@ -30,27 +28,48 @@ prompt('username: ').then(username =>
 
 ).then(data => {
 
-    const fundsAvailable = data.account.buying_power;
+    let fundsAvailable = data.account.buying_power;
 
-    console.log(`\n------------------------------------\n`);
+    console.log('\n------------------------------------\n');
 
     console.log(`Available funds: ${format(fundsAvailable)}\n`);
 
-    data.quotes.results.forEach(quote => {
+    const buys = data.quotes.results.map(quote => {
 
-        const spend = fundsAvailable * config[quote.symbol],
-            price = quote.last_extended_hours_trade_price || quote.last_trade_price || quote.ask_price,
+        const spend = data.account.buying_power * config[quote.symbol],
+            price = quote.bid_price || quote.ask_price || quote.last_extended_hours_trade_price || quote.last_trade_price,
             quantity = Math.floor(spend / price);
 
-        console.log(`> Buying ${quantity} shares of ${quote.symbol} at ${format(price)} per share`);
+        fundsAvailable -= price * quantity;
 
-        if (quantity > 0) {
+        return {
+            price,
+            quantity,
+            quote
+        };
 
-            robinhood.buy({
-                account: config.account,
-                symbol: quote.symbol,
-                instrument: quote.instrument,
-                quantity
+    });
+
+    buys.forEach(buy => {
+
+        if (fundsAvailable > buy.price) {
+
+            buy.quantity++;
+
+            fundsAvailable -= buy.price;
+
+        }
+
+        console.log(`> Buying ${buy.quantity} shares of ${buy.quote.symbol} at ${format(buy.price)} per share`);
+
+        if (buy.quantity > 0) {
+
+            robinhood.buy(data.token, {
+                account: data.account.url,
+                symbol: buy.quote.symbol,
+                instrument: buy.quote.instrument,
+                price: buy.price,
+                quantity: buy.quantity
             });
 
         }
